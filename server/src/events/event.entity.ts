@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn, CreateDateColumn } from 'typeorm';
 import { User } from '../users/user.entity';
 
 export enum EventCategory {
@@ -39,6 +39,10 @@ export class Event {
   @Column()
   isVirtual: boolean;
 
-  @ManyToOne(type => User, user => user.events)
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @ManyToOne(type => User)
+  @JoinColumn()
   createdBy: User;
 }
