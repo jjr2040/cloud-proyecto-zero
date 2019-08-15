@@ -1,7 +1,7 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark" *ngIf="token">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark" *ngIf="isLoggedIn">
     <div class="navbar-nav">
-        <a class="nav-item nav-link" routerLink="/">Home</a>
-        <a class="nav-item nav-link" (click)="logout()">Logout</a>
+        <a class="nav-item nav-link" routerLink="/">Eventos</a>
+        <a class="nav-item nav-link" (click)="logout()">Cerrar sesión</a>
     </div>
 </nav>
 <div class="container">

@@ -41,8 +41,8 @@ export class EventsController {
     event.category = category;
     event.place = place;
     event.address = address;
-    event.startsAt = new Date(startsAt);
-    event.endsAt = new Date(endsAt);
+    event.startsAt = new Date(startsAt.year, startsAt.month, startsAt.day);
+    event.endsAt = new Date(endsAt.year, startsAt.month, startsAt.day);
     event.isVirtual = isVirtual;
 
     return this.eventsService.save(event, userId);

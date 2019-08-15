@@ -1,4 +1,6 @@
+import { AuthService } from './auth/services/auth.service';
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +9,19 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'project-zero';
+  isLoggedIn: boolean;
+
+  constructor(
+    private authService: AuthService,
+    private router: Router
+  ) {
+    authService.token.subscribe( () => {
+      this.isLoggedIn = authService.isLoggedIn;
+    });
+  }
+
+  logout() {
+    this.authService.logout();
+    this.router.navigate(['/login']);
+  }
 }

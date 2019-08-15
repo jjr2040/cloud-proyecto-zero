@@ -1,0 +1,61 @@
+<form [formGroup]="eventForm" (ngSubmit)="onSubmit()">
+  <div class="modal-header">
+    <h4 class="modal-title">Crear nuevo evento</h4>
+    <button type="button" class="close" (click)="dismiss()" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="form-group">
+      <label for="name">Nombre</label>
+      <input type="text" formControlName="name" class="form-control">
+    </div>
+    <div class="form-group">
+      <label for="category">Categoría</label>
+      <select class="form-control" name="category" formControlName="category" id="">
+        <option *ngFor="let category of categories" [value]="category">{{category}}</option>
+      </select>
+      <!-- <input type="text" formControlName="category" class="form-control"> -->
+    </div>
+    <div class="form-group">
+      <label for="place">Lugar</label>
+      <input type="text" formControlName="place" class="form-control">
+    </div>
+    <div class="form-group">
+      <label for="address">Dirección</label>
+      <input type="text" formControlName="address" class="form-control">
+    </div>
+    <div class="form-group">
+      <label for="startsAt">Fecha de inicio</label>
+      <div class="input-group">
+        <input class="form-control" placeholder="yyyy-mm-dd" name="startsAt" formControlName="startsAt" ngbDatepicker #startsdp="ngbDatepicker">
+        <div class="input-group-append">
+          <button class="btn btn-outline-secondary calendar" (click)="startsdp.toggle()" type="button"></button>
+        </div>
+      </div>
+      <!-- <input type="date" formControlName="startsAt" class="form-control"> -->
+    </div>
+    <div class="form-group">
+      <label for="endsAt">Fecha de fin</label>
+      <div class="input-group">
+        <input class="form-control" placeholder="yyyy-mm-dd" name="endsAt" formControlName="endsAt" ngbDatepicker #endsdp="ngbDatepicker">
+        <div class="input-group-append">
+          <button class="btn btn-outline-secondary calendar" (click)="endsdp.toggle()" type="button"></button>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="isVirtual">Es virtual</label>
+      <input type="checkbox" class="form-control" name="isVirtual" formControlName="isVirtual">
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button [disabled]="loading" class="btn btn-primary">
+      <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+      Crear
+    </button>
+    <button class="btn btn-secondary" (click)="dismiss()">Cancelar</button>
+  </div>
+</form>
+
+
