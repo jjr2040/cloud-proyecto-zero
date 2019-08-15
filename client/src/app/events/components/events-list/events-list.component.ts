@@ -25,7 +25,11 @@ export class EventsListComponent implements OnInit {
 
   openCreateEventModal() {
     const modal = this.modalService.open(CreateEventComponent);
-    modal.result.then( event => this.events.push(event) );
+    modal.result.then( event => {
+      this.events.push(event);
+    }, reason => {
+      console.log(reason);
+    });
   }
 
   delete(event: Event) {
@@ -40,11 +44,14 @@ export class EventsListComponent implements OnInit {
     modal.result.then( updatedEvent => {
       _.remove(this.events, (e: Event) => e.id === event.id);
       this.events.push(updatedEvent);
+    }, reason => {
+      console.log(reason);
     });
   }
 
   showDetail(event: Event) {
     const modal = this.modalService.open(CreateEventComponent);
     modal.componentInstance.readOnly = true;
+    modal.componentInstance.event = event;
   }
 }

@@ -2,7 +2,7 @@ import { Event } from './../../models/event';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Component, OnInit, Input } from '@angular/core';
 import { EventsApiService } from '../../services/events-api.service';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbDate, NgbCalendar, NgbCalendarGregorian } from '@ng-bootstrap/ng-bootstrap';
 import { EventCategory } from '../../models/event';
 
 @Component({
@@ -12,7 +12,7 @@ import { EventCategory } from '../../models/event';
 })
 export class CreateEventComponent implements OnInit {
 
-  @Input() event;
+  @Input() event?: Event;
   @Input() readOnly = false;
 
   eventForm: FormGroup;
@@ -33,14 +33,18 @@ export class CreateEventComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    if (!this.event) {
+      this.event = new Event();
+    }
+
     this.eventForm = this.formBuilder.group({
-      name: ['', Validators.required],
-      category: ['', Validators.required],
-      place: ['', Validators.required],
-      address: ['', Validators.required],
-      startsAt: [Date(), Validators.required],
-      endsAt: [Date(), Validators.required],
-      isVirtual: [false, Validators.required]
+      name: [{ value: this.event.name, disabled: this.readOnly }, Validators.required],
+      category: [{ value: this.event.category, disabled: this.readOnly }, Validators.required],
+      place: [{ value: this.event.place, disabled: this.readOnly }, Validators.required],
+      address: [{ value: this.event.address, disabled: this.readOnly }, Validators.required],
+      startsAt: [{ value: this.dateToNgbDate(this.event.startsAt), disabled: this.readOnly }, Validators.required],
+      endsAt: [{ value: this.dateToNgbDate(this.event.endsAt), disabled: this.readOnly }, Validators.required],
+      isVirtual: [{ value: this.event.isVirtual, disabled: this.readOnly }, Validators.required]
     });
   }
 
@@ -66,4 +70,11 @@ export class CreateEventComponent implements OnInit {
     });
   }
 
+  private dateToNgbDate(dateString?: string): NgbDate {
+    if (dateString) {
+      const date = new Date(dateString);
+      return new NgbDate(date.getFullYear(), date.getMonth(), date.getDay());
+    }
+    return new NgbCalendarGregorian().getToday();
+  }
 }

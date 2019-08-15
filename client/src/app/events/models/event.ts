@@ -13,9 +13,9 @@ export class Event {
   category: EventCategory;
   place: string;
   address: string;
-  startsAt: Date;
-  endsAt: Date;
+  startsAt: string;
+  endsAt: string;
   isVirtual: boolean;
-  createdAt: Date;
+  createdAt: string;
   createdBy: User;
 }
