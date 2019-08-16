@@ -2,8 +2,9 @@ import { Event } from './../../models/event';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Component, OnInit, Input } from '@angular/core';
 import { EventsApiService } from '../../services/events-api.service';
-import { NgbActiveModal, NgbDate, NgbCalendar, NgbCalendarGregorian } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbDate, NgbCalendar, NgbCalendarGregorian, NgbDateStruct, NgbDateNativeAdapter } from '@ng-bootstrap/ng-bootstrap';
 import { EventCategory } from '../../models/event';
+import { NgbDateISOParserFormatter } from '@ng-bootstrap/ng-bootstrap/datepicker/ngb-date-parser-formatter';
 
 @Component({
   selector: 'app-create-event',
@@ -50,6 +51,10 @@ export class CreateEventComponent implements OnInit {
 
   get f(): any { return this.eventForm.controls; }
 
+  get actionName(): string {
+    return this.event.id ? 'Editar' : 'Crear';
+  }
+
   dismiss() {
     this.activeModal.dismiss('close');
   }
@@ -61,19 +66,30 @@ export class CreateEventComponent implements OnInit {
 
     this.loading = true;
 
-    const event: Event = this.eventForm.value;
+    const event: any = this.eventForm.value;
 
-    this.eventsService.create(event).subscribe( newEvent => {
-      this.activeModal.close(newEvent);
-    }, error => {
-      this.error = error;
-    });
+    if (this.event.id) {
+      event.id = this.event.id;
+      event.createdAt = this.dateToNgbDate(this.event.createdAt);
+
+      this.eventsService.update(event).subscribe( newEvent => {
+        this.activeModal.close(newEvent);
+      }, error => {
+        this.error = error;
+      });
+    } else {
+      this.eventsService.create(event).subscribe( newEvent => {
+        this.activeModal.close(newEvent);
+      }, error => {
+        this.error = error;
+      });
+    }
   }
 
-  private dateToNgbDate(dateString?: string): NgbDate {
+  private dateToNgbDate(dateString?: string): NgbDateStruct {
     if (dateString) {
       const date = new Date(dateString);
-      return new NgbDate(date.getFullYear(), date.getMonth(), date.getDay());
+      return new NgbDateNativeAdapter().fromModel(date);
     }
     return new NgbCalendarGregorian().getToday();
   }

@@ -48,10 +48,10 @@
       <label class="form-check-label" for="isVirtual">Es virtual</label>
     </div>
   </div>
-  <div class="modal-footer">
+  <div *ngIf="!readOnly" class="modal-footer">
     <button [disabled]="loading" class="btn btn-primary">
       <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
-      Crear
+      {{actionName}}
     </button>
     <button class="btn btn-secondary" (click)="dismiss()">Cancelar</button>
   </div>

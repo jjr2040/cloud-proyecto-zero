@@ -26,8 +26,12 @@ export class EventsController {
   }
 
   @Patch()
-  async updateEvent(@Body() event: Event, @Request() req) {
+  async updateEvent(@Body() event: any, @Request() req) {
     const { userId } = req.user;
+    const startsAt = event.startsAt;
+    const endsAt = event.endsAt;
+    event.startsAt = new Date(startsAt.year, startsAt.month, startsAt.day);
+    event.endsAt = new Date(endsAt.year, startsAt.month, startsAt.day);
     return this.eventsService.save(event, userId);
   }
 
